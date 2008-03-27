@@ -1,0 +1,50 @@
+﻿<haxe selected="0">
+  <output name="Flash9" mode="swf9" out="phx.swf" class="Main" lib="" cmd="" main="True" debug="False">-swf-header 800:600:40</output>
+  <files path="/">
+    <dir path="col">
+      <file path="phx\col\AABB.hx" />
+      <file path="phx\col\BroadPhase.hx" />
+      <file path="phx\col\BruteForce.hx" />
+      <file path="phx\col\SortedList.hx" />
+      <file path="phx\col\SortedTree.hx" />
+    </dir>
+    <dir path="demo">
+      <file path="phx\demo\BasicStack.hx" />
+      <file path="phx\demo\BoxPyramidDemo.hx" />
+      <file path="phx\demo\Demo.hx" />
+      <file path="phx\demo\DominoPyramid.hx" />
+      <file path="phx\demo\FontArray.hx" />
+      <file path="phx\demo\Jumble.hx" />
+      <file path="Main.hx" />
+      <file path="phx\demo\PentagonRain.hx" />
+      <file path="phx\demo\PyramidThree.hx" />
+      <file path="phx\demo\SegmentDemo.hx" />
+      <file path="phx\demo\Test.hx" />
+      <file path="phx\demo\TitleDemo.hx" />
+    </dir>
+    <dir path="shape">
+      <file path="phx\Circle.hx" />
+      <file path="phx\Polygon.hx" />
+      <file path="phx\Segment.hx" />
+      <file path="phx\Shape.hx" />
+    </dir>
+    <dir path="struct">
+      <file path="phx\Allocator.hx" />
+      <file path="phx\Axis.hx" />
+      <file path="phx\Contact.hx" />
+      <file path="phx\joint\Joint.hx" />
+      <file path="phx\Material.hx" />
+      <file path="phx\Properties.hx" />
+      <file path="phx\Vector.hx" />
+    </dir>
+    <file path="phx\Arbiter.hx" />
+    <file path="phx\Body.hx" />
+    <file path="phx\Collision.hx" />
+    <file path="phx\Const.hx" />
+    <file path="phx\FlashDraw.hx" />
+    <file path="phx\Island.hx" />
+    <file path="phx\Timer.hx" />
+    <file path="TODO.txt" />
+    <file path="phx\World.hx" />
+  </files>
+</haxe>
