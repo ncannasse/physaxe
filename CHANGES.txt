@@ -1,0 +1,6 @@
+TODO
+	haxe : precompute constant binops -> Collision::test switch on (s1Type << 4) | s2Type
+	joints
+
+2008-??-?? : 1.0
+	base engine
