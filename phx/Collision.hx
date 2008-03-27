@@ -6,11 +6,6 @@ class Collision {
 	}
 
 	public inline function testShapes( s1 : Shape, s2 : Shape, a : Arbiter ) {
-		if( s1.type > s2.type ) {
-			var tmp = s1;
-			s1 = s2;
-			s2 = tmp;
-		}
 		return if( s1.type == Shape.POLYGON && s2.type == Shape.POLYGON )
 			poly2poly(s1.polygon,s2.polygon,a);
 		else if( s1.type == Shape.CIRCLE ) {

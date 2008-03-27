@@ -198,6 +198,13 @@ class World implements BroadCallback {
 		if( b1 == b2 || (s1.groups & s2.groups) == 0 )
 			return false;
 
+		// prepare for testShapes
+		if( s1.type > s2.type ) {
+			var tmp = s1;
+			s1 = s2;
+			s2 = tmp;
+		}
+
 		var pairFound = true;
 		var a;
 		for( arb in b1.arbiters )
