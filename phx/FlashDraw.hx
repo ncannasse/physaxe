@@ -20,6 +20,7 @@ class FlashDraw {
 	public var contactSize : Color;
 	public var drawSegmentsBorders : Bool;
 	public var drawSegmentsNormals : Bool;
+	public var drawCircleRotation : Bool;
 
 	public function new( g ) {
 		this.g = g;
@@ -135,6 +136,10 @@ class FlashDraw {
 
 	function drawCircle( c : Circle ) {
 		g.drawCircle(c.tC.x, c.tC.y, c.r );
+		if( drawCircleRotation ) {
+			g.moveTo(c.tC.x, c.tC.y);
+			g.lineTo(c.tC.x + c.body.rcos * c.r, c.tC.y + c.body.rsin * c.r);
+		}
 	}
 
 	function drawPoly( p : Polygon ) {
