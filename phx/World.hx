@@ -104,6 +104,7 @@ class World implements BroadCallback {
 			while( true ) {
 				var b = stack.pop();
 				if( b == null ) break;
+				if( b.isStatic ) continue;
 				i.bodies.add(b);
 				for( a in b.arbiters ) {
 					if( a.island != null ) continue;
@@ -219,7 +220,7 @@ class World implements BroadCallback {
 
 		testedCollisions++;
 
-		if( b1 == b2 || (s1.groups & s2.groups) == 0 )
+		if( b1 == b2 || (b1.isStatic && b2.isStatic) || (s1.groups & s2.groups) == 0 )
 			return false;
 
 		// prepare for testShapes
@@ -291,7 +292,14 @@ class World implements BroadCallback {
 		waitingBodies.add(b);
 		b.properties.count++;
 		properties.set(b.properties.id,b.properties);
-		b.updatePhysics();
+		if( b.isStatic ) {
+			b.mass = Math.POSITIVE_INFINITY;
+			b.invMass = 0;
+			b.inertia = Math.POSITIVE_INFINITY;
+			b.invInertia = 0;
+			sync(b);
+		} else
+			b.updatePhysics();
 		for( s in b.shapes )
 			broadphase.addShape(s);
 	}
@@ -324,6 +332,13 @@ class World implements BroadCallback {
 		joints.remove(j);
 		destroyIsland(j.b1.island);
 		destroyIsland(j.b2.island);
+	}
+
+	public function sync( b : Body ) {
+		for( s in b.shapes ) {
+			s.update();
+			broadphase.syncShape(s);
+		}
 	}
 
 	function checkBody( b : Body, i : Island ) {
