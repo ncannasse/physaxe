@@ -27,6 +27,9 @@ package phx.demo;
 class Test extends Demo {
 
 	var body : phx.Body;
+	var body2 : phx.Body;
+	var dir : Int;
+	var et : Float;
 
 	public function init() {
 		#if flash9
@@ -35,14 +38,31 @@ class Test extends Demo {
 		#end
 		Main.inst.recalStep = true;
 		Main.inst.debug = true;
+		world.gravity = new phx.Vector(0,0.9);
 		steps = 1;
-		world.gravity.set(0,1000);
-		createFloor();
-		body = addBody( 300, 300, phx.Shape.makeBox(32,64), new phx.Properties(1.0,1.0,0.9,1000000) );
+		body = addBody( 300, 500, phx.Shape.makeBox(128,16) );
+		body.isStatic = true;
+		world.removeBody(body);
+		world.addBody(body);
+		body2 = addBody( 250, 500 - 64, new phx.Circle(10,new phx.Vector(0,0)) );
+		body2.v.x = 0.5;
+		//body2 = addBody( 250, 500 - 64, phx.Shape.makeBox(64,64) );
+		body2.preventRotation();
+		dir = 1;
+		et = 0;
 	}
 
-	public function step( dt ) {
-		//trace(body.v.y * body.v.y);
+	public function step( dt : Float ) {
+		et += dt;
+		if( et > 100 ) {
+			et -= 100;
+			dir *= -1;
+		}
+		body.v.x = 1 * dir;
+		body.v.y = -0.5 * dir;
+		body.x += body.v.x * dt;
+		body.y += body.v.y * dt;
+		world.sync(body);
 	}
 
 }

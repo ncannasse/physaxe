@@ -51,8 +51,8 @@ class Arbiter {
 		var m2 = s2.material;
 		var p1 = s1.body.properties;
 		var p2 = s2.body.properties;
-		restitution = m1.restitution * m2.restitution;
-		friction = m1.friction * m2.friction;
+		restitution = if( m1.restitution > m2.restitution ) m1.restitution else m2.restitution;
+		friction = Math.sqrt(m1.friction * m2.friction);
 		bias = (p1.biasCoef > p2.biasCoef) ? p1.biasCoef : p2.biasCoef;
 	}
 
@@ -120,11 +120,14 @@ class Arbiter {
 			c.r2nx = -c.r2y;
 			c.r2ny =  c.r2x;
 
+			// note : compared to box2d, the calculus of the normal and tangent masses
+			// uses (r x n) ^  2 instead of (r . r - (r . n) ^ 2), which
+
 			// normal mass
 			var r1cn = c.r1x * c.ny - c.r1y * c.nx;
 			var r2cn = c.r2x * c.ny - c.r2y * c.nx;
 			var kn = mass_sum + (b1.invInertia * r1cn * r1cn) + (b2.invInertia * r2cn * r2cn);
-			c.nMass = 1 / kn;
+			c.nMass = 1.0 / kn;
 
 			// tangent mass
 			var tx = -c.ny;
@@ -132,17 +135,15 @@ class Arbiter {
 			var r1ct = c.r1x * ty - c.r1y * tx;
 			var r2ct = c.r2x * ty - c.r2y * tx;
 			var kt = mass_sum + b1.invInertia * r1ct * r1ct + b2.invInertia * r2ct * r2ct;
-			c.tMass = 1 / kt;
+			c.tMass = 1.0 / kt;
 
 			// bias
 			c.bias = -bias * (c.dist + Const.SLOP);
 			c.jBias = 0;
 
-			var v1x = c.r1nx * b1.w + b1.v.x;
-			var v1y = c.r1ny * b1.w + b1.v.y;
-			var v2x = c.r2nx * b2.w + b2.v.x;
-			var v2y = c.r2ny * b2.w + b2.v.y;
-			c.bounce = (c.nx * (v2x - v1x) + c.ny * (v2y - v1y)) * restitution * dt;
+			var vrx = (c.r2nx * b2.w + b2.v.x) - (c.r1nx * b1.w + b1.v.x);
+			var vry = (c.r2ny * b2.w + b2.v.y) - (c.r1ny * b1.w + b1.v.y);
+			c.bounce = (c.nx * vrx + c.ny * vry) * restitution * dt;
 
 			// apply impulse
 			var cjTx = (c.nx * c.jnAcc) + (tx * c.jtAcc);

@@ -106,6 +106,11 @@ class Body {
 		}
 	}
 
+	public function preventRotation() {
+		inertia = Math.POSITIVE_INFINITY;
+		invInertia = 0;
+	}
+
 	public function setAngle( a : Float ) {
 		this.a = a;
 		rcos = Math.cos(a);

@@ -85,6 +85,7 @@ class Main {
 			fd.sleepingContact.line = 0xFF00FF;
 			fd.contact.fill = 0x00FF00;
 			fd.contact.alpha = 0.5;
+			fd.drawCircleRotation = true;
 		}
 		if( draw )
 			fd.drawWorld(world);
