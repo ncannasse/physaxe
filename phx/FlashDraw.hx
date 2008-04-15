@@ -34,7 +34,12 @@ typedef Color = {
 
 class FlashDraw {
 
+	#if flash
 	var g : flash.display.Graphics;
+	#else js
+	var g : phx.JsCanvas;
+	#end
+
 	public var shape : Color;
 	public var staticShape : Color;
 	public var sleepingShape : Color;

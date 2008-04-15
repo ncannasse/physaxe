@@ -22,14 +22,24 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
+#if js
+import js.Dom;
+#end
+
 class Main {
 
 	public var debug : Bool;
 	public var stopped : Bool;
 	public var recalStep : Bool;
 
+	#if flash
 	var root : flash.display.MovieClip;
 	var tf : flash.text.TextField;
+	#else js
+	var root : HtmlDom;
+	var timer : haxe.Timer;
+	#end
+
 	var world : phx.World;
 	var demo : phx.demo.Demo;
 	var draw : Bool;
@@ -38,32 +48,42 @@ class Main {
 	var broadphases : Array<phx.col.BroadPhase>;
 
 	public function new(root) {
+		frame = 0;
+		curbf = 0;
+		draw = true;
+		debug = false;
+		stopped = false;
 		this.root = root;
+		var me = this;
+		#if flash
 		tf = new flash.text.TextField();
 		tf.selectable = false;
 		tf.width = 300;
 		tf.height = 500;
 		root.addChild(tf);
-		frame = 0;
-		draw = true;
-		debug = false;
-		stopped = false;
 		var stage = root.stage;
 		stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
-		stage.addEventListener(flash.events.Event.ENTER_FRAME,onEnterFrame);
-		stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,onMouseDown);
-		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,onKeyDown);
+		stage.addEventListener(flash.events.Event.ENTER_FRAME,function(_) me.loop());
+		stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,function(_) me.fireBlock(me.root.mouseX,me.root.mouseY));
+		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,function(e:flash.events.KeyboardEvent) me.onKeyDown(e.keyCode));
+		#else js
+		var fps = 20;
+		timer = new haxe.Timer(Math.round(1000 / fps));
+		timer.run = loop;
+		js.Lib.document.onkeydown = function(e:Event) me.onKeyDown(e.keyCode);
+		js.Lib.document.onmousedown = function(e:Event) me.fireBlock(e.clientX,e.clientY);
+		#end
 		broadphases = new Array();
 		broadphases.push(new phx.col.SortedList());
 		broadphases.push(new phx.col.BruteForce());
 	}
 
-	function onEnterFrame(_) {
+	function loop() {
 
 		// step
 		var steps = if( stopped ) 0 else demo.steps;
 		var dt = 1;
-		var niter = 20;
+		var niter = #if flash 20 #else js 5 #end;
 		for( i in 0...steps ) {
 			try {
 				demo.step(dt/steps);
@@ -77,8 +97,13 @@ class Main {
 		if( recalStep ) world.step(0,1);
 
 		// draw
-		root.graphics.clear();
-		var fd = new phx.FlashDraw(root.graphics);
+		#if flash
+		var g = root.graphics;
+		#else js
+		var g = new phx.JsCanvas(root);
+		#end
+		g.clear();
+		var fd = new phx.FlashDraw(g);
 		if( debug ) {
 			fd.boundingBox.line = 0x000000;
 			fd.contact.line = 0xFF0000;
@@ -90,26 +115,26 @@ class Main {
 		if( draw )
 			fd.drawWorld(world);
 
+		#if flash
 		// update infos
 		if( frame++ % Std.int(flash.Lib.current.stage.frameRate / 4) == 0 )
 			tf.text = buildInfos().join("\n");
+		#end
 	}
 
-	function onMouseDown( e : flash.events.MouseEvent ) {
-		fireBlock();
-	}
-
-	function onKeyDown( e : flash.events.KeyboardEvent ) {
-		switch( e.keyCode ) {
-		case flash.ui.Keyboard.SPACE:
+	function onKeyDown( code : Int ) {
+		switch( code ) {
+		case 32:/*SPACE*/
 			debug = !debug;
 		case 66: /*B*/
 			curbf = (curbf + 1) % broadphases.length;
 			world.setBroadPhase(broadphases[curbf]);
 		case 68: /*D*/
 			draw = !draw;
+		#if flash
 		case 83: /*S*/
 			root.stage.frameRate = (root.stage.frameRate == 1) ? root.stage.loaderInfo.frameRate : 1;
+		#end
 		case 49: /*1*/ setDemo(new phx.demo.DominoPyramid());
 		case 50:/*2*/ setDemo(new phx.demo.BasicStack());
 		case 51:/*3*/ setDemo(new phx.demo.PyramidThree());
@@ -119,7 +144,7 @@ class Main {
 		case 55:/*7*/ setDemo(new phx.demo.SegmentDemo());
 		case 56:/*8*/ setDemo(new phx.demo.TitleDemo());
 		case 57:/*9*/ setDemo(new phx.demo.Test());
-		case flash.ui.Keyboard.ESCAPE: setDemo(demo);
+		case 27:/*ESC*/ setDemo(demo);
 		}
 	}
 
@@ -160,12 +185,20 @@ class Main {
 		return log;
 	}
 
-	public function fireBlock() {
-		var pos = new phx.Vector(root.stage.stageWidth,root.stage.stageHeight);
+	public function fireBlock( mouseX : Float, mouseY : Float ) {
+		#if flash
+		var width = root.stage.stageWidth;
+		var height = root.stage.stageHeight;
+		#else js
+		var width : Int = untyped root.width;
+		var height : Int = untyped root.height;
+		#end
+
+		var pos = new phx.Vector(width,height);
 		pos.x += 100;
 		pos.y /= 3;
 
-		var v = new phx.Vector( root.mouseX - pos.x, root.mouseY - pos.y );
+		var v = new phx.Vector( mouseX - pos.x, mouseY - pos.y );
 		var k = 15 / v.length();
 		v.x *= k;
 		v.y *= k;
@@ -179,8 +212,13 @@ class Main {
 	public static var inst : Main;
 
 	static function main() {
+		#if flash
 		flash.Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
-		inst = new Main(flash.Lib.current);
+		var root = flash.Lib.current;
+		#else js
+		var root = js.Lib.document.getElementById("draw");
+		#end
+		inst = new Main(root);
 		inst.setDemo(new phx.demo.TitleDemo());
 	}
 

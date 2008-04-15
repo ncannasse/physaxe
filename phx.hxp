@@ -1,5 +1,6 @@
 ﻿<haxe selected="0">
   <output name="Flash9" mode="swf9" out="phx.swf" class="Main" lib="" cmd="" main="True" debug="False">-swf-header 800:600:40</output>
+  <output name="JS" mode="js" out="phx.js" class="Main" lib="" cmd="phx.html" main="True" debug="False" active="False"></output>
   <files path="/">
     <dir path="col">
       <file path="phx\col\AABB.hx" />
@@ -45,6 +46,7 @@
     <file path="phx\Const.hx" />
     <file path="phx\FlashDraw.hx" />
     <file path="phx\Island.hx" />
+    <file path="phx\JsCanvas.hx" />
     <file path="phx\Timer.hx" />
     <file path="phx\World.hx" />
   </files>
