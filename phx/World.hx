@@ -297,7 +297,8 @@ class World implements BroadCallback {
 			b.invMass = 0;
 			b.inertia = Math.POSITIVE_INFINITY;
 			b.invInertia = 0;
-			sync(b);
+			for( s in b.shapes )
+				s.update();
 		} else
 			b.updatePhysics();
 		for( s in b.shapes )

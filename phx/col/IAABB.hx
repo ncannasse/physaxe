@@ -24,35 +24,18 @@
  */
 package phx.col;
 
-class AABB {
+class IAABB {
 
-	public var l:Float;
-	public var b:Float;
-	public var r:Float;
-	public var t:Float;
-
-	public var shape : phx.Shape;
-	public var prev : AABB;
-	public var next : AABB;
-	public var bounds : IAABB;
+	public var l:Int;
+	public var b:Int;
+	public var r:Int;
+	public var t:Int;
 
 	public function new(left,top,right,bottom) {
 		this.l = left;
 		this.t = top;
 		this.r = right;
 		this.b = bottom;
-	}
-
-	public inline function intersects( aabb : AABB ) {
-		return !(aabb.l > r || aabb.r < l || aabb.t > b || aabb.b < t);
-	}
-
-	public inline function intersects2( aabb:AABB ) {
-		return (l<=aabb.r && aabb.l<=r && t<=aabb.b && aabb.t<=b);
-	}
-
-	public inline function containsPoint( v : phx.Vector ) {
-		return !(v.y < t || v.y > b || v.x < l || v.x > r);
 	}
 
 	public function toString() {

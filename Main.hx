@@ -75,6 +75,7 @@ class Main {
 		#end
 		broadphases = new Array();
 		broadphases.push(new phx.col.SortedList());
+		broadphases.push(new phx.col.Quantize(6));
 		broadphases.push(new phx.col.BruteForce());
 	}
 

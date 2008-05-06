@@ -2,6 +2,7 @@
 	allowed static bodies, call world.sync() if position changed
 	minor friction/restitution changes
 	added JS support
+	added phx.sort.Quantize for large worlds
 
 2008-04-06 : 1.0
 	base engine
