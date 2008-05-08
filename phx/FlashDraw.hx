@@ -51,8 +51,15 @@ class FlashDraw {
 	public var drawSegmentsNormals : Bool;
 	public var drawCircleRotation : Bool;
 
+	public var xmin : Int;
+	public var ymin : Int;
+	public var xmax : Int;
+	public var ymax : Int;
+
 	public function new( g ) {
 		this.g = g;
+		this.xmin = this.ymin = -2000000000;
+		this.xmax = this.ymax = 2000000000;
 		drawSegmentsBorders = true;
 		drawSegmentsNormals = false;
 		shape = { lineSize : 2., line : 0x333333, fill : 0xDFECEC, alpha : 1. };
@@ -96,8 +103,8 @@ class FlashDraw {
 				if( c == null ) {
 					var b1 = a.s1.body;
 					var b2 = a.s2.body;
-					var p1 = new phx.Vector( b1.x + Const.XROT(a.s1.offset,b1), b1.y + Const.YROT(a.s1.offset,b1) );
-					var p2 = new phx.Vector( b2.x + Const.XROT(a.s2.offset,b2), b2.y + Const.YROT(a.s2.offset,b2) );
+					var p1 = (a.s1.offset == null) ? new phx.Vector(b1.x,b1.y) : new phx.Vector( b1.x + Const.XROT(a.s1.offset,b1), b1.y + Const.YROT(a.s1.offset,b1) );
+					var p2 = (a.s2.offset == null) ? new phx.Vector(b1.x,b1.y) : new phx.Vector( b2.x + Const.XROT(a.s2.offset,b2), b2.y + Const.YROT(a.s2.offset,b2) );
 					g.moveTo(p1.x,p1.y);
 					g.lineTo(p2.x,p2.y);
 					g.drawCircle(p1.x,p1.y,5);
@@ -121,8 +128,12 @@ class FlashDraw {
 	}
 
 	public function drawBody( b : Body ) {
-		for( s in b.shapes )
+		for( s in b.shapes ) {
+			var b = s.aabb;
+			if( b.r < xmin || b.b < ymin || b.l > xmax || b.t > ymax )
+				continue;
 			drawShape(s);
+		}
 	}
 
 	public function drawShape( s : Shape ) {

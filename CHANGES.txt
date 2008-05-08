@@ -2,7 +2,8 @@
 	allowed static bodies, call world.sync() if position changed
 	minor friction/restitution changes
 	added JS support
-	added phx.sort.Quantize for large worlds
+	added phx.col.Quantize for large worlds
+	FlashDraw only draw shapes in specified bounds
 
 2008-04-06 : 1.0
 	base engine

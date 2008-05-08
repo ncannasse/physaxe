@@ -41,6 +41,7 @@ class Quantize implements BroadPhase {
 
 	var width : Int;
 	var height : Int;
+	var spanbits : Int;
 
 	var all : haxe.FastList<haxe.FastList<AABB>>;
 	var world : Array<haxe.FastList<AABB>>;
@@ -50,6 +51,10 @@ class Quantize implements BroadPhase {
 	public function new( nbits : Int ) {
 		this.nbits = nbits;
 		this.size = 1 << nbits;
+	}
+
+	inline function ADDR(x,y) {
+		return (x << spanbits) | y;
 	}
 
 	public function init( bounds : AABB, cb : BroadCallback ) {
@@ -63,10 +68,11 @@ class Quantize implements BroadPhase {
 		width = Std.int(bounds.r + size - 0.1) >> nbits;
 		height = Std.int(bounds.b + size - 0.1) >> nbits;
 
-		for( i in 0...width * height ) {
-			var l = new haxe.FastList<AABB>();
-			world.push(l);
-			all.add(l);
+		var tmp = width - 1;
+		var spanbits = 0;
+		while( tmp > 0 ) {
+			spanbits++;
+			tmp >>= 1;
 		}
 	}
 
@@ -101,11 +107,17 @@ class Quantize implements BroadPhase {
 		var isout = false;
 		for( x in x1...x2 ) {
 			for( y in y1...y2 ) {
-				var l = world[ x * width + y ];
+				var l = world[ADDR(x,y)];
 				if( l == null ) {
-					if( isout ) continue;
-					isout = true;
-					l = out;
+					if( x >= 0 && x < width && y >= 0 && y < height ) {
+						l = new haxe.FastList<AABB>();
+						all.add(l);
+						world[ADDR(x,y)] = l;
+					} else {
+						if( isout ) continue;
+						isout = true;
+						l = out;
+					}
 				}
 				add(l,box);
 			}
@@ -117,7 +129,7 @@ class Quantize implements BroadPhase {
 		var ib = box.bounds;
 		for( x in ib.l...ib.r ) {
 			for( y in ib.t...ib.b ) {
-				var l = world[ x * width + y ];
+				var l = world[ADDR(x,y)];
 				if( l == null ) l = out;
 				l.remove(box);
 			}
@@ -142,11 +154,17 @@ class Quantize implements BroadPhase {
 		var isout = false;
 		for( x in x1...x2 ) {
 			for( y in y1...y2 ) {
-				var l = world[ x * width + y ];
+				var l = world[ADDR(x,y)];
 				if( l == null ) {
-					if( isout ) continue;
-					isout = true;
-					l = out;
+					if( x >= 0 && x < width && y >= 0 && y < height ) {
+						l = new haxe.FastList<AABB>();
+						all.add(l);
+						world[ADDR(x,y)] = l;
+					} else {
+						if( isout ) continue;
+						isout = true;
+						l = out;
+					}
 				}
 				add(l,box);
 			}

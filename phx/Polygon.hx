@@ -36,7 +36,7 @@ class Polygon extends Shape {
 	public function new( vl : Array<Vector>, offset : Vector, ?material : Material )  {
 		super(Shape.POLYGON, material);
 		polygon = this;
-		this.offset = offset.clone();
+		this.offset = offset;
 		initVertexes(vl);
 	}
 
@@ -45,13 +45,14 @@ class Polygon extends Shape {
 		var count = vl.length;
 		vcount = count;
 		area = 0;
+		var off = (offset != null);
 		for( i in 0...count ) {
 			var v0 = vl[i];
 			var v1 = vl[(i + 1) % count];
 			var v2 = vl[(i + 2) % count];
 			area += v1.x * (v0.y - v2.y);
 
-			var v = v0.plus(offset);
+			var v = off ? v0.plus(offset) : v0;
 			var n = Vector.normal(v1.x - v0.x,v1.y - v0.y);
 			var a = new Axis(n, n.dot(v));
 
