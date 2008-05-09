@@ -78,6 +78,7 @@ class Island {
 		var bf = world.broadphase;
 		var e = 0.;
 		var n = 0;
+		var M = Math;
 		for( b in bodies ) {
 			var motion = b.v.x * b.v.x + b.v.y * b.v.y + b.w * b.w * Const.ANGULAR_TO_LINEAR;
 			if( motion > b.properties.maxMotion ) {
@@ -89,7 +90,9 @@ class Island {
 			}
 			b.x += b.v.x * dt + b.v_bias.x;
 			b.y += b.v.y * dt + b.v_bias.y;
-			b.setAngle( b.a + b.w * dt + b.w_bias );
+			b.a += b.w * dt + b.w_bias;
+			b.rcos = M.cos(b.a);
+			b.rsin = M.sin(b.a);
 			b.motion = b.motion * Const.SLEEP_BIAS + (1 - Const.SLEEP_BIAS) * motion;
 			b.f.x = b.f.y = b.t = 0;
 			b.v_bias.x = b.v_bias.y = b.w_bias = 0;
@@ -100,9 +103,8 @@ class Island {
 				bf.syncShape(s);
 			}
 		}
-		energy = e / (n + 1);
-
-		if( energy < Const.SLEEP_EPSILON && world.allowSleep ) {
+		energy = e / M.sqrt(n);
+		if( energy < world.sleepEpsilon ) {
 			for( b in bodies ) {
 				b.v.x = 0;
 				b.v.y = 0;

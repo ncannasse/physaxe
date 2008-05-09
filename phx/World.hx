@@ -42,11 +42,11 @@ class World implements BroadCallback {
 	// config
 	public var gravity : Vector;
 	public var boundsCheck : Int;
-	public var allowSleep : Bool;
 	public var useIslands : Bool;
 	public var debug : Bool;
 	public var testedCollisions : Int;
 	public var activeCollisions : Int;
+	public var sleepEpsilon : Float;
 
 	public var islands : haxe.FastList<Island>;
 	var properties : IntHash<Properties>;
@@ -60,8 +60,8 @@ class World implements BroadCallback {
 		gravity = new Vector(0,0);
 		stamp = 0;
 		debug = false;
-		allowSleep = true;
 		useIslands = true;
+		sleepEpsilon = Const.DEFAULT_SLEEP_EPSILON;
 		boundsCheck = Const.WORLD_BOUNDS_FREQ;
 		allocator = new Allocator();
 		collision = new Collision();
@@ -146,7 +146,7 @@ class World implements BroadCallback {
 			i.bodies = bodies;
 			i.arbiters = arbiters;
 			i.joints = joints;
-			allowSleep = false;
+			sleepEpsilon = 0; // disable sleeping
 			islands = new haxe.FastList<Island>();
 			islands.add(i);
 		}

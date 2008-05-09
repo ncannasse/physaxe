@@ -4,6 +4,8 @@
 	added JS support
 	added phx.col.Quantize for large worlds
 	FlashDraw only draw shapes in specified bounds
+	adjusted island energy calculus
+	sleepEpsilon is now a variable of world
 
 2008-04-06 : 1.0
 	base engine
