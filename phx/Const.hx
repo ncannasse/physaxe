@@ -38,7 +38,7 @@ class Const {
 	// sleep
 	public static inline var SLEEP_BIAS = 0.95;
 	public static inline var DEFAULT_SLEEP_EPSILON = 0.002;
-	public static inline var WAKEUP_EPSILON = 0.004;
+	public static inline var WAKEUP_FACTOR = 2;
 	public static inline var ANGULAR_TO_LINEAR = 30.0; // 1 degree ~= 0.5 pix
 
 	// The amount that shapes are allowed to penetrate

@@ -95,7 +95,7 @@ class World implements BroadCallback {
 	function buildIslands() {
 		var stack = new haxe.FastList<Body>();
 		for( b in waitingBodies ) {
-			if( b.island != null )
+			if( b.island != null || b.isStatic )
 				continue;
 			var i = allocator.allocIsland(this);
 			islands.add(i);
@@ -291,6 +291,7 @@ class World implements BroadCallback {
 		bodies.add(b);
 		waitingBodies.add(b);
 		b.properties.count++;
+		b.motion = sleepEpsilon * Const.WAKEUP_FACTOR;
 		properties.set(b.properties.id,b.properties);
 		if( b.isStatic ) {
 			b.mass = Math.POSITIVE_INFINITY;
@@ -318,7 +319,7 @@ class World implements BroadCallback {
 
 	public function activate( b : Body ) {
 		var i = b.island;
-		b.motion = sleepEpsilon * 2;
+		b.motion = sleepEpsilon * Const.WAKEUP_FACTOR;
 		if( i != null && i.sleeping ) {
 			i.sleeping = false;
 			for( a in i.arbiters )

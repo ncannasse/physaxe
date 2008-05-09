@@ -66,7 +66,6 @@ class Body {
 		v_bias = new phx.Vector(0,0);
 		a = w = t = w_bias = 0;
 		rcos = 1; rsin = 0;
-		motion = Const.WAKEUP_EPSILON;
 		shapes = new haxe.FastList<Shape>();
 		arbiters = new haxe.FastList<Arbiter>();
 	}
