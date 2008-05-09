@@ -318,6 +318,7 @@ class World implements BroadCallback {
 
 	public function activate( b : Body ) {
 		var i = b.island;
+		b.motion = sleepEpsilon * 2;
 		if( i != null && i.sleeping ) {
 			i.sleeping = false;
 			for( a in i.arbiters )
