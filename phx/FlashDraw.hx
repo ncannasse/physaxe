@@ -111,7 +111,8 @@ class FlashDraw {
 					g.drawCircle(p2.x,p2.y,5);
 				}
 				while( c != null ) {
-					g.drawRect(c.px - 1,c.py - 1,2,2);
+					if( c.updated )
+						g.drawRect(c.px - 1,c.py - 1,2,2);
 					c = c.next;
 				}
 				end(col);
@@ -119,7 +120,8 @@ class FlashDraw {
 			if( begin(contactSize) ) {
 				var c = a.contacts;
 				while( c != null ) {
-					g.drawCircle(c.px, c.py, c.dist);
+					if( c.updated )
+						g.drawCircle(c.px, c.py, c.dist);
 					c = c.next;
 				}
 				end(contactSize);
