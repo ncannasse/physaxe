@@ -22,6 +22,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
+package phx.demo;
+
 #if js
 import js.Dom;
 #end
@@ -58,6 +60,7 @@ class Main {
 		#if flash
 		tf = new flash.text.TextField();
 		tf.selectable = false;
+		tf.x = 500;
 		tf.width = 300;
 		tf.height = 500;
 		root.addChild(tf);
@@ -109,8 +112,6 @@ class Main {
 			fd.boundingBox.line = 0x000000;
 			fd.contact.line = 0xFF0000;
 			fd.sleepingContact.line = 0xFF00FF;
-			fd.contact.fill = 0x00FF00;
-			fd.contact.alpha = 0.5;
 			fd.drawCircleRotation = true;
 		}
 		if( draw )
@@ -172,6 +173,10 @@ class Main {
 			t.format("island"),
 			t.format("solve"),
 		];
+		#if flash9
+		if( flash.system.Capabilities.isDebugger )
+			log.unshift("DEBUG");
+		#end
 		var nislands = Lambda.count(world.islands);
 		if( nislands > 5 )
 			log.push("Islands="+nislands);

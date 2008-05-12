@@ -1,5 +1,5 @@
 # Flash9
 -swf phx.swf
 -swf-version 9
--main Main
+-main phx.demo.Main
 -swf-header 800:600:40

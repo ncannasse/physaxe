@@ -1,6 +1,6 @@
 ﻿<haxe selected="0">
-  <output name="Flash9" mode="swf9" out="phx.swf" class="Main" lib="" cmd="" main="True" debug="False">-swf-header 800:600:40</output>
-  <output name="JS" mode="js" out="phx.js" class="Main" lib="" cmd="phx.html" main="True" debug="False" active="False"></output>
+  <output name="Flash9" mode="swf9" out="phx.swf" class="phx.demo.Main" lib="" cmd="" main="True" debug="False">-swf-header 800:600:40</output>
+  <output name="JS" mode="js" out="phx.js" class="phx.demo.Main" lib="" cmd="phx.html" main="True" debug="False" active="False"></output>
   <files path="/">
     <dir path="col">
       <file path="phx\col\AABB.hx" />
@@ -16,7 +16,7 @@
       <file path="phx\demo\DominoPyramid.hx" />
       <file path="phx\demo\FontArray.hx" />
       <file path="phx\demo\Jumble.hx" />
-      <file path="Main.hx" />
+      <file path="phx\demo\Main.hx" />
       <file path="phx\demo\PentagonRain.hx" />
       <file path="phx\demo\PyramidThree.hx" />
       <file path="phx\demo\SegmentDemo.hx" />
