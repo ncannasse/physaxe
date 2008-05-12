@@ -39,7 +39,7 @@ class SegmentDemo extends Demo {
 		lastRefresh = 50;
 	}
 
-	public function init() {
+	public override function init() {
 		world.gravity.set(0, 0.3125);
 
 		world.addStaticShape( new phx.Segment( new phx.Vector(0, 0), new phx.Vector(220, 200), 4));
@@ -63,7 +63,7 @@ class SegmentDemo extends Demo {
 		}
 	}
 
-	public function step( dt : Float ) {
+	public override function step( dt : Float ) {
 		lastRefresh += 1;
 		if( lastRefresh < refreshDelay )
 			return;

@@ -37,12 +37,12 @@ class Jumble extends Demo {
 		material = new phx.Material(0.1, 0.5, 1);
 	}
 
-	public function init() {
+	public override function init() {
 		world.gravity.set(0,0.3125);
 		createFloor();
 	}
 
-	public function step( dt : Float) {
+	public override function step( dt : Float) {
 		lastAdd += 1;
 		if( lastAdd < addDelay ) return;
 		lastAdd = 0;

@@ -40,7 +40,7 @@ class PentagonRain extends Demo {
 		lastRefresh = 0;
 	}
 
-	public function init() {
+	public override function init() {
 		world.gravity.set(0,0.0625);
 		steps = 1;
 
@@ -61,7 +61,7 @@ class PentagonRain extends Demo {
 		}
 	}
 
-	public function step( dt : Float ) {
+	public override function step( dt : Float ) {
 		lastRefresh += dt;
 		if( lastRefresh < refreshDelay ) return;
 		for( p in pentagons ) {

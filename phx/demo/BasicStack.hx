@@ -26,7 +26,7 @@ package phx.demo;
 
 class BasicStack extends Demo {
 
-	public function init() {
+	public override function init() {
 		world.gravity.set(0,0.1875);
 		createFloor();
 		var box = phx.Shape.makeBox( 30, 30, new phx.Material(0.0, .8, 1) );

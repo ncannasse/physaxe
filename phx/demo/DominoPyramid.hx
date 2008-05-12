@@ -26,7 +26,7 @@ package phx.demo;
 
 class DominoPyramid extends Demo {
 
-	public function init() {
+	public override function init() {
 		world.gravity.set(0,0.3125);
 		createFloor();
 

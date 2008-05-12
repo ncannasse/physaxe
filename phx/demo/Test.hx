@@ -31,7 +31,7 @@ class Test extends Demo {
 	var dir : Int;
 	var et : Float;
 
-	public function init() {
+	public override function init() {
 		#if flash9
 		var stage = flash.Lib.current.stage;
 		//stage.frameRate = 1;
@@ -52,7 +52,7 @@ class Test extends Demo {
 		et = 0;
 	}
 
-	public function step( dt : Float ) {
+	public override function step( dt : Float ) {
 		et += dt;
 		if( et > 100 ) {
 			et -= 100;

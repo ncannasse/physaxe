@@ -26,7 +26,7 @@ package phx.demo;
 
 class BoxPyramidDemo extends Demo {
 
-	public function init() {
+	public override function init() {
 		createFloor();
 		world.gravity.set(0,0.09375);
 

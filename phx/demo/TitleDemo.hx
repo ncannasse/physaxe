@@ -26,7 +26,7 @@ package phx.demo;
 
 class TitleDemo extends Demo {
 
-	public function init() {
+	public override function init() {
 		createWord("physaxe", 60, 180, 20, 0);
 		var material = new phx.Material(0.1, 0.7, 3);
 		var stick1 = addRectangle( -100, 0, 100, 20, material );
