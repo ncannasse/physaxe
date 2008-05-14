@@ -35,7 +35,6 @@ class Arbiter {
 	public var s2 : Shape;
 
 	public var stamp : Int;
-	public var updated : Bool;
 	public var island : Island;
 	public var allocator : Allocator;
 	public var sleeping : Bool;
