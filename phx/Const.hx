@@ -32,7 +32,7 @@ class Const {
 	public static inline var AREA_MASS_RATIO = 0.01;
 	public static inline var WORLD_BOUNDS_FREQ = 120;
 
-	public static var DEFAULT_MATERIAL = new Material( 0.01, 0.9, 1 );
+	public static var DEFAULT_MATERIAL = new Material( 0.001, 0.81, 1 );
 	public static var DEFAULT_PROPERTIES = new Properties( 0.999, 0.999, 0.1, FMAX );
 
 	// sleep
