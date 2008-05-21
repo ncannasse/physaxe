@@ -141,7 +141,7 @@ class Body {
 		if( w != null ) this.w = w;
 	}
 
-	public f9dynamic function onDestroy() {
+	public dynamic function onDestroy() {
 	}
 
 }
