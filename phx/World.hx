@@ -104,19 +104,18 @@ class World implements BroadCallback {
 			while( true ) {
 				var b = stack.pop();
 				if( b == null ) break;
-				if( b.isStatic ) continue;
 				i.bodies.add(b);
 				for( a in b.arbiters ) {
 					if( a.island != null ) continue;
 					i.arbiters.add(a);
 					a.island = i;
 					var b1 = a.s1.body;
-					if( b1.island == null ) {
+					if( b1.island == null && !b1.isStatic ) {
 						b1.island = i;
 						stack.add(b1);
 					}
 					var b2 = a.s2.body;
-					if( b2.island == null ) {
+					if( b2.island == null && !b2.isStatic ) {
 						b2.island = i;
 						stack.add(b2);
 					}
