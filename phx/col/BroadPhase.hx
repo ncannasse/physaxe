@@ -30,7 +30,7 @@ interface BroadCallback {
 
 interface BroadPhase {
 	// initiliaze when added into world
-	function init( bounds : AABB, cb : BroadCallback ) : Void;
+	function init( bounds : AABB, cb : BroadCallback, staticBody : phx.Body ) : Void;
 	// modify the shape list
 	function addShape( s : phx.Shape ) : Void;
 	function removeShape( s : phx.Shape ) : Void;

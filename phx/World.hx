@@ -70,7 +70,7 @@ class World implements BroadCallback {
 		staticBody.updatePhysics();
 		box = worldBoundary;
 		this.broadphase = broadphase;
-		broadphase.init(box,this);
+		broadphase.init(box,this,staticBody);
 		timer = new Timer();
 
 		islands = new haxe.FastList<Island>();
@@ -78,7 +78,7 @@ class World implements BroadCallback {
 	}
 
 	public function setBroadPhase( bf : BroadPhase ) {
-		bf.init(box,this);
+		bf.init(box,this,staticBody);
 		for( b in bodies ) {
 			for( s in b.shapes ) {
 				broadphase.removeShape(s);

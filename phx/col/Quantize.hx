@@ -47,6 +47,7 @@ class Quantize implements BroadPhase {
 	var world : Array<haxe.FastList<AABB>>;
 	var out : haxe.FastList<AABB>;
 	var cb : BroadCallback;
+	var staticBody : phx.Body;
 
 	public function new( nbits : Int ) {
 		this.nbits = nbits;
@@ -57,8 +58,9 @@ class Quantize implements BroadPhase {
 		return (x << spanbits) | y;
 	}
 
-	public function init( bounds : AABB, cb : BroadCallback ) {
+	public function init( bounds : AABB, cb : BroadCallback, staticBody ) {
 		this.cb = cb;
+		this.staticBody = staticBody;
 
 		all = new haxe.FastList<haxe.FastList<AABB>>();
 		world = new Array();
@@ -77,14 +79,14 @@ class Quantize implements BroadPhase {
 	}
 
 	function add( l : haxe.FastList<AABB>, box : AABB ) {
-		if( !box.shape.body.isStatic ) {
+		if( box.shape.body != staticBody ) {
 			l.add(box);
 			return;
 		}
 		var b = l.head;
 		var prev = null;
 		while( b != null ) {
-			if( b.elt.shape.body.isStatic )
+			if( b.elt.shape.body == staticBody )
 				break;
 			prev = b;
 			b = b.next;
@@ -180,7 +182,7 @@ class Quantize implements BroadPhase {
 			var box1 = list.head;
 			while( box1 != null ) {
 				var b = box1.elt;
-				if( b.shape.body.isStatic )
+				if( b.shape.body == staticBody )
 					break;
 				var box2 = list.head;
 				while( box2 != null ) {

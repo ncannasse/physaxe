@@ -34,7 +34,7 @@ class BruteForce implements BroadPhase {
 	public function new() {
 	}
 
-	public function init( bounds, callb ) {
+	public function init( bounds, callb, staticBody ) {
 		this.callb = callb;
 		shapes = new haxe.FastList<Shape>();
 	}
