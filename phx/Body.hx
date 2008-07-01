@@ -141,6 +141,10 @@ class Body {
 		if( w != null ) this.w = w;
 	}
 
+	public function toString() {
+		return "Body#"+id;
+	}
+
 	public dynamic function onDestroy() {
 	}
 

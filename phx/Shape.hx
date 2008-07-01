@@ -63,6 +63,10 @@ class Shape {
 		return 1.;
 	}
 
+	public function toString() {
+		return "Shape#"+id;
+	}
+
 	public static function makeBox( width : Float, height : Float, ?px, ?py, ?mat ) {
 		if( px == null ) px = -width / 2;
 		if( py == null ) py = -height / 2;
