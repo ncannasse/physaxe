@@ -62,22 +62,11 @@ class BruteForce implements BroadPhase {
 	}
 
 	public function pick( box : AABB ) {
-		var bodies = new haxe.FastList<phx.Body>();
-		// we might test several time the same body
-		// but assume that >1 shapes bodies are rare
-		for( sh in shapes ) {
-			var cull = true;
-			for( s in sh.body.shapes )
-				if( box.intersects(s.aabb) ) {
-					cull = false;
-					break;
-				}
-			if( cull ) {
-				bodies.remove(sh.body);
-				bodies.add(sh.body);
-			}
-		}
-		return bodies;
+		var shapes = new haxe.FastList<phx.Shape>();
+		for( s in this.shapes )
+			if( s.aabb.intersects(box) )
+				shapes.add(s);
+		return shapes;
 	}
 
 	public function syncShape( s : phx.Shape ) {

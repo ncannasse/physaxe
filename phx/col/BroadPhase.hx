@@ -40,7 +40,7 @@ interface BroadPhase {
 	// perform the collisions
 	function collide() : Void;
 	// pick the content of the box
-	function pick( bounds : AABB ) : haxe.FastList<phx.Body>;
+	function pick( bounds : AABB ) : haxe.FastList<phx.Shape>;
 	// check the validity of inner datas (for debug)
 	function validate() : Bool;
 }

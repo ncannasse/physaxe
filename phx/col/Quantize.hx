@@ -196,8 +196,29 @@ class Quantize implements BroadPhase {
 	}
 
 	public function pick( box : AABB ) {
-		// TODO
-		return new haxe.FastList<phx.Body>();
+		var nbits = this.nbits;
+		var x1 = Std.int(box.l) >> nbits;
+		var y1 = Std.int(box.t) >> nbits;
+		var x2 = (Std.int(box.r) >> nbits) + 1;
+		var y2 = (Std.int(box.b) >> nbits) + 1;
+		var isout = false;
+		var shapes = new haxe.FastList<phx.Shape>();
+		for( x in x1...x2 )
+			for( y in y1...y2 ) {
+				var l = world[ADDR(x,y)];
+				if( l == null ) {
+					if( x >= 0 && x < width && y >= 0 && y < height )
+						continue;
+					if( isout )
+						continue;
+					isout = true;
+					l = out;
+				}
+				for( b in l )
+					if( b.intersects(box) )
+						shapes.add(b.shape);
+			}
+		return shapes;
 	}
 
 	public function validate() {

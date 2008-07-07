@@ -187,10 +187,14 @@ class World implements BroadCallback {
 		// cleanup
 		stamp++;
 		if( boundsCheck > 0 && stamp % boundsCheck == 0 ) {
-			for( b in broadphase.pick(box) ) {
-				removeBody(b);
-				b.onDestroy();
-			}
+			var tmp = new haxe.FastList<phx.Body>();
+			for( b in bodies )
+				tmp.add(b);
+			for( s in broadphase.pick(box) )
+				tmp.remove(s.body);
+			for( b in tmp )
+				if( removeBody(b) )
+					b.onDestroy();
 		}
 		timer.stop();
 	}
@@ -306,7 +310,7 @@ class World implements BroadCallback {
 	}
 
 	public function removeBody(b) {
-		if( !bodies.remove(b) ) return;
+		if( !bodies.remove(b) ) return false;
 		b.properties.count--;
 		if( b.properties.count == 0 )
 			properties.remove(b.properties.id);
@@ -314,6 +318,7 @@ class World implements BroadCallback {
 			broadphase.removeShape(s);
 		destroyIsland(b.island);
 		waitingBodies.remove(b);
+		return true;
 	}
 
 	public function activate( b : Body ) {

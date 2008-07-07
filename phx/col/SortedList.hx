@@ -90,25 +90,20 @@ class SortedList implements BroadPhase {
 	}
 
 	public function pick( box : AABB ) {
-		var bodies = new haxe.FastList<phx.Body>();
-		// we might test several time the same body
-		// but assume that >1 shapes bodies are rare
+		var shapes = new haxe.FastList<phx.Shape>();
 		var b = boxes;
+		// skip top boxes
 		while( b != null ) {
-			var body = b.shape.body;
-			var cull = true;
-			for( s in body.shapes )
-				if( box.intersects(s.aabb) ) {
-					cull = false;
-					break;
-				}
-			if( cull ) {
-				bodies.remove(body);
-				bodies.add(body);
-			}
+			if( b.t <= box.b )
+				break;
 			b = b.next;
 		}
-		return bodies;
+		while( b != null ) {
+			if( b.intersects(box) )
+				shapes.add(b.shape);
+			b = b.next;
+		}
+		return shapes;
 	}
 
 	public function syncShape( s : Shape ) {
