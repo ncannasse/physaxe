@@ -234,7 +234,7 @@ class World implements BroadCallback {
 		}
 
 		var pairFound = true;
-		var a;
+		var a = null;
 		for( arb in b1.arbiters )
 			if( (arb.s1 == s1 && arb.s2 == s2) || (arb.s1 == s2 && arb.s2 == s1) ) {
 				a = arb;

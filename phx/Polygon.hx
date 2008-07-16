@@ -41,7 +41,7 @@ class Polygon extends Shape {
 	}
 
 	function initVertexes( vl : Array<Vector> ) {
-		var l_verts, l_tVerts, l_axes, l_tAxes;
+		var l_verts = null, l_tVerts = null, l_axes = null, l_tAxes = null;
 		var count = vl.length;
 		vcount = count;
 		area = 0;

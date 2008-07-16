@@ -59,7 +59,7 @@ class Collision {
 	function poly2poly( shape1 : Polygon, shape2 : Polygon, arb : Arbiter ) {
 		// first, project shape 2 vertices onto shape 1 axes & find MSA
 		var max1 = -Const.FMAX;
-		var axis1;
+		var axis1 = null;
 		var a = shape1.tAxes;
 		while( a != null ) {
 			var min = polyAxisProject(shape2,a.n,a.d);
@@ -73,7 +73,7 @@ class Collision {
 
 		// Second, project shape 1 vertices onto shape 2 axes & find MSA
 		var max2 = -Const.FMAX;
-		var axis2;
+		var axis2 = null;
 		a = shape2.tAxes;
 		while( a != null ) {
 			var min = polyAxisProject(shape1,a.n,a.d);
@@ -193,7 +193,7 @@ class Collision {
 
 		var a = poly.tAxes;
 		var polyMin = -Const.FMAX;
-		var axis;
+		var axis = null;
 		while( a != null ) {
 			var dist = segAxisProject(seg,a.n,a.d);
 			if( dist > 0 )
@@ -225,7 +225,7 @@ class Collision {
 	}
 
 	function circle2poly( circle : Circle, poly : Polygon, arb : Arbiter ) {
-		var a0, v0;
+		var a0 = null, v0 = null;
 		var a = poly.tAxes;
 		var v = poly.tVerts;
 
