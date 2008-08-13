@@ -1,5 +1,5 @@
 <project name="physaxe" url="http://code.google.com/p/physaxe" license="BSD">
     <user name="ncannasse"/>
     <description>A 2D Rigid Body Physics Library optimized for Flash9</description>
-    <version name="1.0">See CHANGES.txt</version>
+    <version name="1.1">See CHANGES.txt</version>
 </project>
