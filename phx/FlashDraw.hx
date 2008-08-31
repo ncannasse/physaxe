@@ -58,8 +58,8 @@ class FlashDraw {
 
 	public function new( g ) {
 		this.g = g;
-		this.xmin = this.ymin = -2000000000;
-		this.xmax = this.ymax = 2000000000;
+		this.xmin = this.ymin = -1000000000;
+		this.xmax = this.ymax = 1000000000;
 		drawSegmentsBorders = true;
 		drawSegmentsNormals = false;
 		shape = { lineSize : 2., line : 0x333333, fill : 0xDFECEC, alpha : 1. };
