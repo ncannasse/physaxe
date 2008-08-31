@@ -1,6 +1,8 @@
 ﻿<haxe selected="0">
   <output name="Flash9" mode="swf9" out="phx.swf" class="phx.demo.Main" lib="" cmd="" main="True" debug="False">-swf-header 800:600:40</output>
   <output name="JS" mode="js" out="phx.js" class="phx.demo.Main" lib="" cmd="phx.html" main="True" debug="False" active="False"></output>
+  <output name="Neash" mode="neko" out="phx.n" class="phx.demo.Main" lib="" cmd="" main="True" debug="False" active="False">-lib neash
+--remap flash:neash</output>
   <files path="/">
     <dir path="col">
       <file path="phx\col\AABB.hx" />

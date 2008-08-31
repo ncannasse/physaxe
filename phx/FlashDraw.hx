@@ -34,9 +34,9 @@ typedef Color = {
 
 class FlashDraw {
 
-	#if flash
+	#if (flash || neko)
 	var g : flash.display.Graphics;
-	#else js
+	#elseif js
 	var g : phx.JsCanvas;
 	#end
 

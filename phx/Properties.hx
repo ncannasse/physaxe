@@ -41,6 +41,7 @@ class Properties {
 
 	public function new( linearFriction, angularFriction, biasCoef, maxMotion ) {
 		id = PID++;
+		count = 0;
 		this.linearFriction = linearFriction;
 		this.angularFriction = angularFriction;
 		this.biasCoef = biasCoef;
