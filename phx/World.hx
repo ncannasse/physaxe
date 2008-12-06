@@ -318,6 +318,11 @@ class World implements BroadCallback {
 			broadphase.removeShape(s);
 		destroyIsland(b.island);
 		waitingBodies.remove(b);
+		// remove arbiters for the other bodies
+		for( a in b.arbiters ) {
+			var b1 = a.s1.body;
+			(if( b1 == b ) a.s2.body else b1).arbiters.remove(a);
+		}
 		return true;
 	}
 
