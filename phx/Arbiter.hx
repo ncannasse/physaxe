@@ -137,7 +137,7 @@ class Arbiter {
 			c.tMass = 1.0 / kt;
 
 			// bias
-			c.bias = -bias * (c.dist + Const.SLOP);
+			c.bias = -bias * (c.dist + allocator.slop);
 			c.jBias = 0;
 
 			var vrx = (c.r2nx * b2.w + b2.v.x) - (c.r1nx * b1.w + b1.v.x);

@@ -1,6 +1,7 @@
 2009-??-?? : 1.2
 	fixed issue when removed body had living arbiters
 	fixed body inertia calculus (issues with density)
+	allow dynamic slop (and set default to 0.5 pixels)
 
 2008-08-13 : 1.1
 	allowed static bodies, call world.sync() if position changed

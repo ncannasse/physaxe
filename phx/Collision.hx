@@ -212,8 +212,6 @@ class Collision {
 			arb.injectContact(va, n, -1.0, polyMin, 0 );
 		if( polyContainsPoint(poly,vb) )
 			arb.injectContact(vb, n, -1.0, polyMin, 1 );
-
-		polyMin -= Const.SLOP;
 		if( minNorm >= polyMin || minNeg >= polyMin ) {
 			if( minNorm > minNeg )
 				findPolyPointsBehindSegment(seg, poly, minNorm, 1.0, arb);

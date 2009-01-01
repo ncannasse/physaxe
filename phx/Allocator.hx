@@ -28,6 +28,7 @@ class Allocator {
 
 	var contactPool : Contact;
 	var islandPool : Island;
+	public var slop : Float;
 
 	public function new() {
 	}

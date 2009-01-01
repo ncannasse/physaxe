@@ -47,6 +47,7 @@ class World implements BroadCallback {
 	public var testedCollisions : Int;
 	public var activeCollisions : Int;
 	public var sleepEpsilon : Float;
+	public var slop : Float;
 
 	public var islands : haxe.FastList<Island>;
 	var properties : IntHash<Properties>;
@@ -63,6 +64,7 @@ class World implements BroadCallback {
 		useIslands = true;
 		sleepEpsilon = Const.DEFAULT_SLEEP_EPSILON;
 		boundsCheck = Const.WORLD_BOUNDS_FREQ;
+		slop = Const.DEFAULT_SLOP;
 		allocator = new Allocator();
 		collision = new Collision();
 		staticBody = new phx.Body(0,0);
@@ -128,6 +130,7 @@ class World implements BroadCallback {
 	public function step( dt : Float, iterations : Int ) {
 		if( dt < Const.EPSILON ) dt = 0;
 		timer.start("all");
+		allocator.slop = slop;
 
 		// update properties
 		var invDt = if( dt == 0 ) 0 else 1 / dt;

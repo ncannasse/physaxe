@@ -42,7 +42,7 @@ class Const {
 	// The amount that shapes are allowed to penetrate
 	// Setting this to zero will work just fine, but using a small positive
 	// amount will help prevent oscillating contacts.
-	public static inline var SLOP = 0.1;
+	public static inline var DEFAULT_SLOP = 0.5;
 
 	public static inline function XROT( v : Vector, b : Body ) {
 		return v.x * b.rcos - v.y * b.rsin;
