@@ -119,8 +119,10 @@ class Arbiter {
 			c.r2nx = -c.r2y;
 			c.r2ny =  c.r2x;
 
-			// note : compared to box2d, the calculus of the normal and tangent masses
-			// uses (r x n) ^  2 instead of (r . r - (r . n) ^ 2), which
+			// we will calculate the factor which is the inverse of
+			// 1/M1 + 1/M2 + (R1 x N) ^ 2 / I1 + (R2 x N) ^ 2 / I2
+			// in the past (R1.R1 - (R1.N)^2) was used in Box2D but
+			// this is no longer the case
 
 			// normal mass
 			var r1cn = c.r1x * c.ny - c.r1y * c.nx;
@@ -140,6 +142,7 @@ class Arbiter {
 			c.bias = -bias * (c.dist + allocator.slop);
 			c.jBias = 0;
 
+			// vrel = N . ((V2 + W2 x N2) - (V1 + W1 x N1))
 			var vrx = (c.r2nx * b2.w + b2.v.x) - (c.r1nx * b1.w + b1.v.x);
 			var vry = (c.r2ny * b2.w + b2.v.y) - (c.r1ny * b1.w + b1.v.y);
 			c.bounce = (c.nx * vrx + c.ny * vry) * restitution * dt;
