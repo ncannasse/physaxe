@@ -41,6 +41,9 @@ class Main {
 	var root : HtmlDom;
 	var timer : haxe.Timer;
 	#end
+	#if flash
+	var defaultFrameRate : Float;
+	#end
 
 	var world : phx.World;
 	var demo : phx.demo.Demo;
@@ -75,6 +78,9 @@ class Main {
 		timer.run = loop;
 		js.Lib.document.onkeydown = function(e:Event) me.onKeyDown(e.keyCode);
 		js.Lib.document.onmousedown = function(e:Event) me.fireBlock(e.clientX,e.clientY);
+		#end
+		#if flash
+		defaultFrameRate = root.stage.frameRate;
 		#end
 		broadphases = new Array();
 		broadphases.push(new phx.col.SortedList());
@@ -135,7 +141,7 @@ class Main {
 			draw = !draw;
 		#if flash
 		case 83: /*S*/
-			root.stage.frameRate = (root.stage.frameRate == 1) ? root.stage.loaderInfo.frameRate : 1;
+			root.stage.frameRate = (root.stage.frameRate == 1) ? defaultFrameRate : 1;
 		#end
 		case 49: /*1*/ setDemo(new phx.demo.DominoPyramid());
 		case 50:/*2*/ setDemo(new phx.demo.BasicStack());

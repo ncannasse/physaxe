@@ -84,9 +84,9 @@ class Body {
 		var m = 0.;
 		var i = 0.;
 		for( s in shapes ) {
-			var sm = s.area * Const.AREA_MASS_RATIO * s.material.density;
+			var sm = s.area * s.material.density;
 			m += sm;
-			i += s.calculateInertia();
+			i += s.calculateInertia() * sm;
 		}
 		if( m > 0 ) {
 			mass = m;

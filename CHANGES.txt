@@ -1,5 +1,6 @@
 2009-??-?? : 1.2
 	fixed issue when removed body had living arbiters
+	fixed body inertia calculus (issues with density)
 
 2008-08-13 : 1.1
 	allowed static bodies, call world.sync() if position changed

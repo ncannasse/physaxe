@@ -28,8 +28,6 @@ class Const {
 
 	public static inline var FMAX = 1e99;
 	public static inline var EPSILON = 1e-99;
-
-	public static inline var AREA_MASS_RATIO = 0.01;
 	public static inline var WORLD_BOUNDS_FREQ = 120;
 
 	public static var DEFAULT_MATERIAL = new Material( 0.001, 0.81, 1 );
