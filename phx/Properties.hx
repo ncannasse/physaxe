@@ -28,10 +28,30 @@ class Properties {
 
 	static var PID = 0;
 
+	/**
+		The amount the linear speed of the object is reduced by time
+	**/
 	public var linearFriction : Float;
+
+	/**
+		The amount the angular speed of the object is reduced by time
+	**/
 	public var angularFriction : Float;
+
+	/**
+		The percentage the object position will be modified if it is inside another object
+	**/
 	public var biasCoef : Float;
+
+	/**
+		The maximum movement of the object
+	**/
 	public var maxMotion : Float;
+
+	/**
+		The maximum distance at which we can interpenerate another object without applying position bias
+	**/
+	public var maxDist : Float;
 
 	// internal
 	public var id : Int;
@@ -39,13 +59,14 @@ class Properties {
 	public var lfdt : Float;
 	public var afdt : Float;
 
-	public function new( linearFriction, angularFriction, biasCoef, maxMotion ) {
+	public function new( linearFriction, angularFriction, biasCoef, maxMotion, maxDist ) {
 		id = PID++;
 		count = 0;
 		this.linearFriction = linearFriction;
 		this.angularFriction = angularFriction;
 		this.biasCoef = biasCoef;
 		this.maxMotion = maxMotion;
+		this.maxDist = maxDist;
 	}
 
 }

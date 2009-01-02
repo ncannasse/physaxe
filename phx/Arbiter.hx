@@ -31,6 +31,7 @@ class Arbiter {
 	var friction : Float;
 	var restitution : Float;
 	var bias : Float;
+	var maxDist : Float;
 	public var s1 : Shape;
 	public var s2 : Shape;
 
@@ -53,6 +54,7 @@ class Arbiter {
 		restitution = if( m1.restitution > m2.restitution ) m1.restitution else m2.restitution;
 		friction = Math.sqrt(m1.friction * m2.friction);
 		bias = (p1.biasCoef > p2.biasCoef) ? p1.biasCoef : p2.biasCoef;
+		maxDist = (p1.maxDist > p2.maxDist) ? p2.maxDist : p1.maxDist;
 	}
 
 	public function injectContact( p : Vector, n : Vector, nCoef : Float, dist : Float, hash : Int ) {
@@ -139,7 +141,7 @@ class Arbiter {
 			c.tMass = 1.0 / kt;
 
 			// bias
-			c.bias = -bias * (c.dist + allocator.slop);
+			c.bias = -bias * (c.dist + maxDist);
 			c.jBias = 0;
 
 			// vrel = N . ((V2 + W2 x N2) - (V1 + W1 x N1))

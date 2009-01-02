@@ -34,7 +34,7 @@ class PyramidThree extends Demo {
 		var height = 11;
 		var slab = phx.Shape.makeBox(width,height,new phx.Material(0.0, 1, 1));
 		var p0 = phx.Const.DEFAULT_PROPERTIES;
-		var props = new phx.Properties(p0.linearFriction,p0.angularFriction,0.001,phx.Const.FMAX);
+		var props = new phx.Properties(p0.linearFriction,p0.angularFriction,0.001,phx.Const.FMAX,p0.maxDist);
 
 		var startY = floor - (height / 2);
 		var startX = size.y / 2;
