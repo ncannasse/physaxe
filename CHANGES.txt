@@ -1,4 +1,4 @@
-2009-??-?? : 1.2
+2009-01-02 : 1.2
 	fixed issue when removed body had living arbiters
 	fixed body inertia calculus (issues with density)
 	allow dynamic slop - maxDist in properties - and set default to 0.5 pixels
