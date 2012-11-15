@@ -34,10 +34,10 @@ class Main {
 	public var stopped : Bool;
 	public var recalStep : Bool;
 
-	#if (flash || neko)
+	#if !js
 	var root : flash.display.MovieClip;
 	var tf : flash.text.TextField;
-	#elseif js
+	#else
 	var root : HtmlDom;
 	var timer : haxe.Timer;
 	#end
@@ -60,9 +60,10 @@ class Main {
 		stopped = false;
 		this.root = root;
 		var me = this;
-		#if (flash || neko)
+		#if !js
 		tf = new flash.text.TextField();
-		tf.selectable = false;
+		// Set to true to bring up keyboard on android/ios
+		tf.selectable = true;
 		tf.x = 500;
 		tf.width = 300;
 		tf.height = 500;
@@ -72,7 +73,7 @@ class Main {
 		stage.addEventListener(flash.events.Event.ENTER_FRAME,function(_) me.loop());
 		stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,function(_) me.fireBlock(me.root.mouseX,me.root.mouseY));
 		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,function(e:flash.events.KeyboardEvent) me.onKeyDown(e.keyCode));
-		#elseif js
+		#else
 		var fps = 20;
 		timer = new haxe.Timer(Math.round(1000 / fps));
 		timer.run = loop;
@@ -107,9 +108,9 @@ class Main {
 		if( recalStep ) world.step(0,1);
 
 		// draw
-		#if (flash || neko)
+		#if !js
 		var g = root.graphics;
-		#elseif js
+		#else
 		var g = new phx.JsCanvas(root);
 		#end
 		g.clear();
@@ -123,7 +124,7 @@ class Main {
 		if( draw )
 			fd.drawWorld(world);
 
-		#if (flash || neko)
+		#if !js
 		// update infos
 		if( frame++ % Std.int(flash.Lib.current.stage.frameRate / 4) == 0 )
 			tf.text = buildInfos().join("\n");
@@ -198,10 +199,10 @@ class Main {
 	}
 
 	public function fireBlock( mouseX : Float, mouseY : Float ) {
-		#if (flash || neko)
+		#if !js
 		var width = root.stage.stageWidth;
 		var height = root.stage.stageHeight;
-		#elseif js
+		#else
 		var width : Int = untyped root.width;
 		var height : Int = untyped root.height;
 		#end
@@ -224,14 +225,14 @@ class Main {
 	public static var inst : Main;
 
 	static function main() {
-		#if flash
-		flash.Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
+		#if neko
+		neash.Lib.Init("Physaxe",800,600,false,true);
+		neash.Lib.SetBackgroundColour(0xffffff);
 		var root = flash.Lib.current;
 		#elseif js
 		var root = js.Lib.document.getElementById("draw");
-		#elseif neko
-		neash.Lib.Init("Physaxe",800,600,false,true);
-		neash.Lib.SetBackgroundColour(0xffffff);
+		#else
+		flash.Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
 		var root = flash.Lib.current;
 		#end
 		inst = new Main(root);
