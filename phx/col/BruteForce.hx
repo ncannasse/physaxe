@@ -28,7 +28,7 @@ import phx.Shape;
 
 class BruteForce implements BroadPhase {
 
-	var shapes : haxe.FastList<Shape>;
+	var shapes : haxe.ds.GenericStack<Shape>;
 	var callb : BroadCallback;
 
 	public function new() {
@@ -36,7 +36,7 @@ class BruteForce implements BroadPhase {
 
 	public function init( bounds, callb, staticBody ) {
 		this.callb = callb;
-		shapes = new haxe.FastList<Shape>();
+		shapes = new haxe.ds.GenericStack<Shape>();
 	}
 
 	public function addShape( s : Shape ) {
@@ -62,7 +62,7 @@ class BruteForce implements BroadPhase {
 	}
 
 	public function pick( box : AABB ) {
-		var shapes = new haxe.FastList<phx.Shape>();
+		var shapes = new haxe.ds.GenericStack<phx.Shape>();
 		for( s in this.shapes )
 			if( s.aabb.intersects(box) )
 				shapes.add(s);

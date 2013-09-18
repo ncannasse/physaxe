@@ -1,3 +1,6 @@
+2013-09-18 : 1.2.1
+	haxe 3 changes
+
 2009-01-02 : 1.2
 	fixed issue when removed body had living arbiters
 	fixed body inertia calculus (issues with density)

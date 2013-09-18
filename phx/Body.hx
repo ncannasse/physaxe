@@ -52,8 +52,8 @@ class Body {
 	public var isStatic:Bool;
 	public var island : Island;
 
-	public var shapes : haxe.FastList<Shape>;
-	public var arbiters : haxe.FastList<Arbiter>;
+	public var shapes : haxe.ds.GenericStack<Shape>;
+	public var arbiters : haxe.ds.GenericStack<Arbiter>;
 	public var properties : Properties;
 
 	public function new( x, y, ?props ) {
@@ -66,8 +66,8 @@ class Body {
 		v_bias = new phx.Vector(0,0);
 		a = w = t = w_bias = 0;
 		rcos = 1; rsin = 0;
-		shapes = new haxe.FastList<Shape>();
-		arbiters = new haxe.FastList<Arbiter>();
+		shapes = new haxe.ds.GenericStack<Shape>();
+		arbiters = new haxe.ds.GenericStack<Arbiter>();
 	}
 
 	public function addShape( s : Shape ) {

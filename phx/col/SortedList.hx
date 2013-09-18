@@ -90,7 +90,7 @@ class SortedList implements BroadPhase {
 	}
 
 	public function pick( box : AABB ) {
-		var shapes = new haxe.FastList<phx.Shape>();
+		var shapes = new haxe.ds.GenericStack<phx.Shape>();
 		var b = boxes;
 		// skip top boxes
 		while( b != null ) {

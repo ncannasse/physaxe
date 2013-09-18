@@ -24,7 +24,7 @@
  */
 package phx.col;
 import phx.col.BroadPhase;
-import haxe.FastList;
+import haxe.ds.GenericStack;
 
 /**
 	This broaphase is optimized for large worlds with a majority of static
@@ -43,9 +43,9 @@ class Quantize implements BroadPhase {
 	var height : Int;
 	var spanbits : Int;
 
-	var all : haxe.FastList<haxe.FastList<AABB>>;
-	var world : Array<haxe.FastList<AABB>>;
-	var out : haxe.FastList<AABB>;
+	var all : GenericStack<GenericStack<AABB>>;
+	var world : Array<GenericStack<AABB>>;
+	var out : GenericStack<AABB>;
 	var cb : BroadCallback;
 	var staticBody : phx.Body;
 
@@ -62,9 +62,9 @@ class Quantize implements BroadPhase {
 		this.cb = cb;
 		this.staticBody = staticBody;
 
-		all = new haxe.FastList<haxe.FastList<AABB>>();
+		all = new GenericStack<GenericStack<AABB>>();
 		world = new Array();
-		out = new haxe.FastList<AABB>();
+		out = new GenericStack<AABB>();
 		all.add(out);
 
 		width = Std.int(bounds.r + size - 0.1) >> nbits;
@@ -78,7 +78,7 @@ class Quantize implements BroadPhase {
 		}
 	}
 
-	function add( l : haxe.FastList<AABB>, box : AABB ) {
+	function add( l : GenericStack<AABB>, box : AABB ) {
 		if( box.shape.body != staticBody ) {
 			l.add(box);
 			return;
@@ -92,9 +92,9 @@ class Quantize implements BroadPhase {
 			b = b.next;
 		}
 		if( prev == null )
-			l.head = new FastCell<AABB>(box,b);
+			l.head = new GenericCell<AABB>(box,b);
 		else
-			prev.next = new FastCell<AABB>(box,b);
+			prev.next = new GenericCell<AABB>(box,b);
 	}
 
 	public function addShape( s : phx.Shape ) {
@@ -112,7 +112,7 @@ class Quantize implements BroadPhase {
 				var l = world[ADDR(x,y)];
 				if( l == null ) {
 					if( x >= 0 && x < width && y >= 0 && y < height ) {
-						l = new haxe.FastList<AABB>();
+						l = new GenericStack<AABB>();
 						all.add(l);
 						world[ADDR(x,y)] = l;
 					} else {
@@ -159,7 +159,7 @@ class Quantize implements BroadPhase {
 				var l = world[ADDR(x,y)];
 				if( l == null ) {
 					if( x >= 0 && x < width && y >= 0 && y < height ) {
-						l = new haxe.FastList<AABB>();
+						l = new GenericStack<AABB>();
 						all.add(l);
 						world[ADDR(x,y)] = l;
 					} else {
@@ -202,7 +202,7 @@ class Quantize implements BroadPhase {
 		var x2 = (Std.int(box.r) >> nbits) + 1;
 		var y2 = (Std.int(box.b) >> nbits) + 1;
 		var isout = false;
-		var shapes = new haxe.FastList<phx.Shape>();
+		var shapes = new GenericStack<phx.Shape>();
 		for( x in x1...x2 )
 			for( y in y1...y2 ) {
 				var l = world[ADDR(x,y)];

@@ -1,0 +1,9 @@
+{
+  "name": "physaxe",
+  "url": "http://github.com/ncannasse/physaxe",
+  "license": "BSD",
+  "description": "A 2D Rigid Body Physics Library optimized for Flash9",
+  "version": "1.2.1",
+  "releasenote": "See CHANGES.txt",
+  "contributors": ["ncannasse"]
+}

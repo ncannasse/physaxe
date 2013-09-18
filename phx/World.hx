@@ -29,9 +29,9 @@ import phx.col.BroadPhase;
 class World implements BroadCallback {
 
 	public var stamp : Int;
-	public var bodies : haxe.FastList<Body>;
-	public var joints : haxe.FastList<Joint>;
-	public var arbiters : haxe.FastList<Arbiter>;
+	public var bodies : haxe.ds.GenericStack<Body>;
+	public var joints : haxe.ds.GenericStack<Joint>;
+	public var arbiters : haxe.ds.GenericStack<Arbiter>;
 	public var staticBody : Body;
 	public var allocator : Allocator;
 	public var broadphase : phx.col.BroadPhase;
@@ -48,15 +48,15 @@ class World implements BroadCallback {
 	public var activeCollisions : Int;
 	public var sleepEpsilon : Float;
 
-	public var islands : haxe.FastList<Island>;
-	var properties : IntHash<Properties>;
-	var waitingBodies : haxe.FastList<Body>;
+	public var islands : haxe.ds.GenericStack<Island>;
+	var properties : Map<Int,Properties>;
+	var waitingBodies : haxe.ds.GenericStack<Body>;
 
 	public function new( worldBoundary, broadphase ) {
-		bodies = new haxe.FastList<Body>();
-		joints = new haxe.FastList<Joint>();
-		arbiters = new haxe.FastList<Arbiter>();
-		properties = new IntHash();
+		bodies = new haxe.ds.GenericStack<Body>();
+		joints = new haxe.ds.GenericStack<Joint>();
+		arbiters = new haxe.ds.GenericStack<Arbiter>();
+		properties = new Map();
 		gravity = new Vector(0,0);
 		stamp = 0;
 		debug = false;
@@ -73,8 +73,8 @@ class World implements BroadCallback {
 		broadphase.init(box,this,staticBody);
 		timer = new Timer();
 
-		islands = new haxe.FastList<Island>();
-		waitingBodies = new haxe.FastList<Body>();
+		islands = new haxe.ds.GenericStack<Island>();
+		waitingBodies = new haxe.ds.GenericStack<Body>();
 	}
 
 	public function setBroadPhase( bf : BroadPhase ) {
@@ -93,7 +93,7 @@ class World implements BroadCallback {
 	}
 
 	function buildIslands() {
-		var stack = new haxe.FastList<Body>();
+		var stack = new haxe.ds.GenericStack<Body>();
 		for( b in waitingBodies ) {
 			if( b.island != null || b.isStatic )
 				continue;
@@ -122,7 +122,7 @@ class World implements BroadCallback {
 				}
 			}
 		}
-		waitingBodies = new haxe.FastList<Body>();
+		waitingBodies = new haxe.ds.GenericStack<Body>();
 	}
 
 	public function step( dt : Float, iterations : Int ) {
@@ -146,7 +146,7 @@ class World implements BroadCallback {
 			i.arbiters = arbiters;
 			i.joints = joints;
 			sleepEpsilon = 0; // disable sleeping
-			islands = new haxe.FastList<Island>();
+			islands = new haxe.ds.GenericStack<Island>();
 			islands.add(i);
 		}
 		if( debug ) checkDatas();
@@ -187,7 +187,7 @@ class World implements BroadCallback {
 		// cleanup
 		stamp++;
 		if( boundsCheck > 0 && stamp % boundsCheck == 0 ) {
-			var tmp = new haxe.FastList<phx.Body>();
+			var tmp = new haxe.ds.GenericStack<phx.Body>();
 			for( b in bodies )
 				tmp.add(b);
 			for( s in broadphase.pick(box) )

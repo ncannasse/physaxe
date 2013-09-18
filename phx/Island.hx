@@ -30,9 +30,9 @@ class Island {
 	static var ID = 0;
 
 	public var id : Int;
-	public var bodies : haxe.FastList<Body>;
-	public var arbiters : haxe.FastList<Arbiter>;
-	public var joints : haxe.FastList<Joint>;
+	public var bodies : haxe.ds.GenericStack<Body>;
+	public var arbiters : haxe.ds.GenericStack<Arbiter>;
+	public var joints : haxe.ds.GenericStack<Joint>;
 	public var sleeping : Bool;
 	public var energy : Float;
 	var world : World;
@@ -43,9 +43,9 @@ class Island {
 		id = ID++;
 		world = w;
 		sleeping = false;
-		bodies = new haxe.FastList<Body>();
-		joints = new haxe.FastList<Joint>();
-		arbiters = new haxe.FastList<Arbiter>();
+		bodies = new haxe.ds.GenericStack<Body>();
+		joints = new haxe.ds.GenericStack<Joint>();
+		arbiters = new haxe.ds.GenericStack<Arbiter>();
 	}
 
 	public function solve( dt : Float, invDt : Float, iterations : Int ) {

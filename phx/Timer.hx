@@ -28,12 +28,12 @@ class Timer {
 
 	var times : Array<Float>;
 	var curs : Array<String>;
-	var datas : Hash<{ total : Float, avg : Float }>;
+	var datas : Map<String, { total : Float, avg : Float }>;
 	public var total : Float;
 
 	public function new() {
 		total = 0.;
-		datas = new Hash();
+		datas = new Map();
 		times = new Array();
 		curs = new Array();
 	}
