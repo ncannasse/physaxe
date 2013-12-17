@@ -25,7 +25,8 @@
 package phx.demo;
 
 #if js
-import js.Dom;
+import js.Browser.document;
+import js.Browser.window;
 #end
 
 class Main {
@@ -34,13 +35,14 @@ class Main {
 	public var stopped : Bool;
 	public var recalStep : Bool;
 
-	#if !js
+	#if js
+	var root : js.html.CanvasElement;
+	var tf : js.html.DivElement;
+	#else
 	var root : flash.display.MovieClip;
 	var tf : flash.text.TextField;
-	#else
-	var root : HtmlDom;
-	var timer : haxe.Timer;
 	#end
+
 	#if flash
 	var defaultFrameRate : Float;
 	#end
@@ -53,40 +55,49 @@ class Main {
 	var broadphases : Array<phx.col.BroadPhase>;
 
 	public function new(root) {
+		
 		frame = 0;
 		curbf = 0;
 		draw = true;
 		debug = false;
 		stopped = false;
 		this.root = root;
-		var me = this;
-		#if !js
+		
+		#if js
+		tf = document.createDivElement();
+		tf.id = "info";
+		document.body.appendChild(tf);
+		#else
 		tf = new flash.text.TextField();
-		// Set to true to bring up keyboard on android/ios
 		tf.selectable = true;
 		tf.x = 500;
 		tf.width = 300;
 		tf.height = 500;
 		root.addChild(tf);
-		var stage = root.stage;
-		stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
-		stage.addEventListener(flash.events.Event.ENTER_FRAME,function(_) me.loop());
-		stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,function(_) me.fireBlock(me.root.mouseX,me.root.mouseY));
-		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,function(e:flash.events.KeyboardEvent) me.onKeyDown(e.keyCode));
-		#else
-		var fps = 20;
-		timer = new haxe.Timer(Math.round(1000 / fps));
-		timer.run = loop;
-		js.Lib.document.onkeydown = function(e:Event) me.onKeyDown(e.keyCode);
-		js.Lib.document.onmousedown = function(e:Event) me.fireBlock(e.clientX,e.clientY);
+		root.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
 		#end
+
 		#if flash
 		defaultFrameRate = root.stage.frameRate;
 		#end
+
 		broadphases = new Array();
 		broadphases.push(new phx.col.SortedList());
 		broadphases.push(new phx.col.Quantize(6));
 		broadphases.push(new phx.col.BruteForce());
+	}
+
+	function start() {
+		var me = this;
+		#if js
+		document.onkeydown = function(e) me.onKeyDown(e.keyCode);
+		document.onmousedown = function(e) me.fireBlock(e.clientX,e.clientY);
+		loop();
+		#else
+		root.stage.addEventListener(flash.events.Event.ENTER_FRAME,function(_) me.loop());
+		root.stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,function(_) me.fireBlock(me.root.mouseX,me.root.mouseY));
+		root.stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,function(e:flash.events.KeyboardEvent) me.onKeyDown(e.keyCode));
+		#end
 	}
 
 	function loop() {
@@ -111,7 +122,7 @@ class Main {
 		#if !js
 		var g = root.graphics;
 		#else
-		var g = new phx.JsCanvas(root);
+		var g = new phx.JsCanvas( root );
 		#end
 		g.clear();
 		var fd = new phx.FlashDraw(g);
@@ -124,8 +135,10 @@ class Main {
 		if( draw )
 			fd.drawWorld(world);
 
-		#if !js
-		// update infos
+		#if js
+		tf.innerText = buildInfos().join("\n");
+		window.requestAnimationFrame( cast loop );
+		#else
 		if( frame++ % Std.int(flash.Lib.current.stage.frameRate / 4) == 0 )
 			tf.text = buildInfos().join("\n");
 		#end
@@ -225,18 +238,27 @@ class Main {
 	public static var inst : Main;
 
 	static function main() {
+		
 		#if neko
 		neash.Lib.Init("Physaxe",800,600,false,true);
 		neash.Lib.SetBackgroundColour(0xffffff);
 		var root = flash.Lib.current;
+		
 		#elseif js
-		var root = js.Lib.document.getElementById("draw");
+		var root = document.createCanvasElement();
+		root.width = window.innerWidth;
+		root.height = window.innerHeight;
+		document.body.appendChild( root );
+	
 		#else
 		flash.Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
 		var root = flash.Lib.current;
 		#end
+
 		inst = new Main(root);
 		inst.setDemo(new phx.demo.TitleDemo());
+		inst.start();
+
 		#if neko
 		neash.Lib.SetFrameRate(100);
 		//neash.Lib.ShowFPS(true);

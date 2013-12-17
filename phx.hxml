@@ -1,6 +1,12 @@
 -cp .
+-main phx.demo.Main
+--each
+
+--next
 -swf phx.swf
 -swf-header 800:600:60:FFFFFF
 --flash-strict
 -swf-version 9
--main phx.demo.Main
+
+--next
+-js phx.js
